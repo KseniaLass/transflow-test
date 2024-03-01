@@ -1,0 +1,35 @@
+@use './variables' as var;
+html {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: var.$base-color;
+  background: var.$base-bg;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  align-items: stretch;
+  height: 100vh;
+}
+
+.col-left {
+  width: 33.33%;
+  border-right: 1px solid;
+}
+
+.col-right {
+  width: 66.66%;
+}
