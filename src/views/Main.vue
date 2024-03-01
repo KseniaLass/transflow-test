@@ -6,6 +6,20 @@
         :tabs="tabs"
         @click="changeActiveTab($event)"
       />
+      <ag-grid-vue
+        v-show="activeTab === 0"
+        class="main__grid ag-theme-quartz"
+        :columnDefs="routesColumn"
+        :rowData="getRoutes"
+        :headerHeight="0"
+      ></ag-grid-vue>
+      <ag-grid-vue
+        v-show="activeTab === 1"
+        class="main__grid ag-theme-quartz"
+        :columnDefs="stopsColumn"
+        :rowData="getStops"
+        :headerHeight="0"
+      ></ag-grid-vue>
     </div>
     <div class="col-right">right</div>
   </div>
@@ -13,14 +27,21 @@
 
 <script>
 import AppTabs from '@/components/AppTabs.vue'
+import { mapGetters } from 'vuex'
+import { AgGridVue } from 'ag-grid-vue'
 
 export default {
   name: 'Main',
-  components: { AppTabs },
+  components: { AppTabs, AgGridVue },
   data: () => ({
     tabs: ['Маршруты', 'Остановки'],
-    activeTab: 0
+    activeTab: 0,
+    routesColumn: [{ headerName: 'Название маршрута', field: 'Name', resizable: false, flex: 1 }],
+    stopsColumn: [{ headerName: 'Название остановки', field: 'Name', resizable: false, flex: 1 }]
   }),
+  computed: {
+    ...mapGetters(['getRoutes', 'getStops'])
+  },
   methods: {
     changeActiveTab(i) {
       this.activeTab = i
@@ -29,4 +50,10 @@ export default {
 }
 </script>
 
-<style scoped></style>
+<style scoped lang="scss">
+.main {
+  &__grid {
+    height: 100%;
+  }
+}
+</style>

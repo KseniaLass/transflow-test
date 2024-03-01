@@ -1,12 +1,12 @@
 <template>
   <div id="app">
     <router-view />
-    <Loader v-show="showLoader" />
+    <Loader v-show="getLoading" />
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapMutations } from 'vuex'
 import Loader from '@/components/Loader.vue'
 
 export default {
@@ -16,16 +16,15 @@ export default {
     loader: false
   }),
   created() {
-    this.getRoutesData()
+    // this.getRoutesData()
+    this.SET_STOPS(this.getRoutes)
   },
   computed: {
-    ...mapGetters(['getRoutes', 'getError']),
-    showLoader() {
-      return this.getRoutes.length && !this.getError
-    }
+    ...mapGetters(['getRoutes', 'getError', 'getLoading'])
   },
   methods: {
-    ...mapActions(['getRoutesData'])
+    ...mapActions(['getRoutesData']),
+    ...mapMutations(['SET_STOPS'])
   }
 }
 </script>
