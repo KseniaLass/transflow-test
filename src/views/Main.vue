@@ -21,18 +21,21 @@
         :headerHeight="0"
       ></ag-grid-vue>
     </div>
-    <div class="col-right">right</div>
+    <div class="col-right">
+      <app-map :routes="getRoutes" />
+    </div>
   </div>
 </template>
 
 <script>
 import AppTabs from '@/components/AppTabs.vue'
+import AppMap from '@/components/AppMap.vue'
 import { mapGetters } from 'vuex'
 import { AgGridVue } from 'ag-grid-vue'
 
 export default {
   name: 'Main',
-  components: { AppTabs, AgGridVue },
+  components: { AppTabs, AppMap, AgGridVue },
   data: () => ({
     tabs: ['Маршруты', 'Остановки'],
     activeTab: 0,

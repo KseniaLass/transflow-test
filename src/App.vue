@@ -1,17 +1,17 @@
 <template>
   <div id="app">
     <router-view />
-    <Loader v-show="getLoading" />
+    <app-loader v-show="getLoading" />
   </div>
 </template>
 
 <script>
 import { mapActions, mapGetters, mapMutations } from 'vuex'
-import Loader from '@/components/Loader.vue'
+import AppLoader from '@/components/AppLoader.vue'
 
 export default {
   name: 'App',
-  components: { Loader },
+  components: { AppLoader },
   data: () => ({
     loader: false
   }),
