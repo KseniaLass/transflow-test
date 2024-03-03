@@ -23,13 +23,13 @@ export default new Vuex.Store({
       const routes = []
       const stops = {}
       data.forEach((route) => {
+        if (!route.Points) return
         const formatRoute = {
           ID: route.ID,
           Name: route.Name,
-          Points: route.Points,
+          Points: route.Points.map(point => [point.Lat, point.Lon]),
           Stops: []
         }
-        if (!route.Points) return
         route.Stops.forEach((stop) => {
           formatRoute.Stops.push(stop.ID)
           if (!stops[stop.ID]) {

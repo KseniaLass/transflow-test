@@ -3,13 +3,18 @@
     style="height: 100vh"
     :center="center"
     :zoom="zoom"
+    :bounds="bounds"
   >
     <l-tile-layer :url="url">></l-tile-layer>
-    <l-polyline
-      v-for="route in routes"
-      :key="route.ID"
-      :lat-lngs="formatPoints(route)"
-    />
+    <template
+      v-if="state === 'routes'"
+    >
+      <l-polyline
+        v-for="route in routes"
+        :key="route.ID"
+        :lat-lngs="route.Points"
+      />
+    </template>
     <l-marker
       v-for="stop in stops"
       :key="stop.ID"
@@ -21,7 +26,7 @@
 
 <script>
 import { LMap, LMarker, LPolyline, LTileLayer } from 'vue2-leaflet'
-import { icon } from 'leaflet'
+import { icon, latLngBounds } from 'leaflet'
 
 export default {
   name: 'AppMap',
@@ -34,19 +39,25 @@ export default {
     stops: {
       type: Array,
       required: true
+    },
+    /**
+     * @enum routes | stops
+     */
+    state: {
+      type: String,
+      required: true
     }
+  },
+  mounted() {
+    this.fitAllRouts()
   },
   data: () => ({
     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
-    zoom: 3,
+    zoom: 1,
     center: [47.41322, -1.219482],
     bounds: null
   }),
   methods: {
-    formatPoints(route) {
-      if (!route.Points) return []
-      return route.Points.map((point) => [point.Lat, point.Lon])
-    },
     markerIcon(stop) {
       if (stop.Forward) {
         return icon({
@@ -57,6 +68,13 @@ export default {
           iconUrl: '/assets/images/markerBack.svg'
         })
       }
+    },
+    fitAllRouts() {
+      const allPoints = []
+      this.routes.forEach((route) => {
+        allPoints.push(...route.Points)
+      })
+      this.bounds = latLngBounds(allPoints)
     }
   }
 }

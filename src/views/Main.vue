@@ -24,6 +24,7 @@
       <app-map
         :routes="getRoutes"
         :stops="getStops"
+        :state="activeTab === 0 ? 'routes' : 'stops'"
       />
     </div>
   </div>
