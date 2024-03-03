@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <router-view />
-    <app-loader v-show="getLoading" />
+    <app-loader v-if="getLoading" />
+    <router-view v-else />
   </div>
 </template>
 
@@ -16,8 +16,7 @@ export default {
     loader: false
   }),
   created() {
-    // this.getRoutesData()
-    this.SET_STOPS(this.getRoutes)
+    this.getRoutesData()
   },
   computed: {
     ...mapGetters(['getRoutes', 'getError', 'getLoading'])

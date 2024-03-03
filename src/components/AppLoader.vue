@@ -54,7 +54,7 @@ export default {
   left: 0;
   width: 100%;
   height: 100%;
-  z-index: 10;
+  z-index: 1000;
   background: var.$base-bg-opacity;
   display: flex;
   justify-content: center;

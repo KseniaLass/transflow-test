@@ -5,30 +5,33 @@
     :zoom="zoom"
   >
     <l-tile-layer :url="url">></l-tile-layer>
-    <l-feature-group
+    <l-polyline
       v-for="route in routes"
       :key="route.ID"
-    >
-      <l-polyline :lat-lngs="formatPoints(route)" />
-      <l-marker
-        v-for="stop in route.Stops"
-        :key="route.ID + stop.ID"
-        :lat-lng="[stop.Lat, stop.Lon]"
-        :icon="markerIcon(stop)"
-      />
-    </l-feature-group>
+      :lat-lngs="formatPoints(route)"
+    />
+    <l-marker
+      v-for="stop in stops"
+      :key="stop.ID"
+      :lat-lng="[stop.Lat, stop.Lon]"
+      :icon="markerIcon(stop)"
+    />
   </l-map>
 </template>
 
 <script>
-import { LFeatureGroup, LMap, LMarker, LPolyline, LTileLayer } from 'vue2-leaflet'
-import { icon } from "leaflet"
+import { LMap, LMarker, LPolyline, LTileLayer } from 'vue2-leaflet'
+import { icon } from 'leaflet'
 
 export default {
   name: 'AppMap',
-  components: { LMap, LTileLayer, LPolyline, LMarker, LFeatureGroup },
+  components: { LMap, LTileLayer, LPolyline, LMarker },
   props: {
     routes: {
+      type: Array,
+      required: true
+    },
+    stops: {
       type: Array,
       required: true
     }
@@ -41,10 +44,11 @@ export default {
   }),
   methods: {
     formatPoints(route) {
+      if (!route.Points) return []
       return route.Points.map((point) => [point.Lat, point.Lon])
     },
     markerIcon(stop) {
-      if (stop.forward) {
+      if (stop.Forward) {
         return icon({
           iconUrl: '/assets/images/markerForward.svg'
         })
