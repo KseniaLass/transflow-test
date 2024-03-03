@@ -1,29 +1,35 @@
 <template>
-  <l-map
-    style="height: 100vh"
-    :center="center"
-    :zoom="zoom"
-    :bounds="bounds"
-  >
-    <l-tile-layer :url="url">></l-tile-layer>
-    <l-polyline
-      :lat-lngs="route.Points"
-      @click="clickOnPolyline(route)"
-      v-for="route in routes"
-      :key="route.ID"
+  <div class="map">
+    <l-map
+      style="height: 100vh"
+      :center="center"
+      :zoom="zoom"
+      :bounds="bounds"
     >
-      <l-tooltip :content="route.Name"></l-tooltip>
-    </l-polyline>
-    <l-marker
-      v-for="stop in stops"
-      :key="stop.ID + ' ' + stop.Forward"
-      :lat-lng="[stop.Lat, stop.Lon]"
-      :icon="markerIcon(stop)"
-      @click="clickOnMarker(stop)"
-    >
-      <l-tooltip :content="stop.Name"></l-tooltip>
-    </l-marker>
-  </l-map>
+      <l-tile-layer :url="url">></l-tile-layer>
+      <l-polyline
+        :lat-lngs="route.Points"
+        @click="clickOnPolyline(route)"
+        v-for="route in routes"
+        :key="route.ID"
+      >
+        <l-tooltip :content="route.Name"></l-tooltip>
+      </l-polyline>
+      <l-marker
+        v-for="stop in stops"
+        :key="stop.ID + ' ' + stop.Forward"
+        :lat-lng="[stop.Lat, stop.Lon]"
+        :icon="markerIcon(stop)"
+        @click="clickOnMarker(stop)"
+      >
+        <l-tooltip :content="stop.Name"></l-tooltip>
+      </l-marker>
+    </l-map>
+    <div class="map__button">
+      <button v-if="stops.length === 1" @click="showAllStops">Показать все остановки</button>
+      <button v-if="routes.length === 1" @click="showAllRoutes">Показать все маршруты</button>
+    </div>
+  </div>
 </template>
 
 <script>
@@ -109,9 +115,32 @@ export default {
     },
     clickOnPolyline(e) {
       this.$emit('clickOnPolyline', e)
+    },
+    showAllStops() {
+      this.$emit('showAllStops')
+    },
+    showAllRoutes() {
+      this.$emit('showAllRoutes')
     }
   }
 }
 </script>
 
-<style scoped lang="scss"></style>
+<style scoped lang="scss">
+@use '@/styles/variables' as var;
+.map {
+  &__button {
+    right: 15px;
+    bottom: 15px;
+    position: absolute;
+    z-index: 1000;
+    button {
+      background: var.$base-color;
+      color: var.$base-bg;
+      border: 0;
+      padding: 15px;
+      cursor: pointer;
+    }
+  }
+}
+</style>

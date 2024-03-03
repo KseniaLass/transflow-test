@@ -34,6 +34,8 @@
         :selected-stop="selectedStop"
         @clickOnMarker="clickOnMarker($event)"
         @clickOnPolyline="clickOnPolyline($event)"
+        @showAllStops="showAllStops"
+        @showAllRoutes="showAllRoutes"
       />
     </div>
   </div>
@@ -81,6 +83,7 @@ export default {
   computed: {
     ...mapGetters(['getRoutes', 'getStops']),
     routes() {
+      console.log('upd')
       if (this.selectedRoute) {
         return [this.selectedRoute]
       } else if (this.activeTab === 0 && !this.selectedStop) {
@@ -105,14 +108,24 @@ export default {
       this.selectedStop = null
     },
     clickStop(params) {
-      params.node.setSelected(true)
-      this.selectedRoute = null
-      this.selectedStop = params.data
+      if (params.node.selected) {
+        params.node.setSelected(false)
+        this.selectedStop = null
+      } else {
+        params.node.setSelected(true)
+        this.selectedRoute = null
+        this.selectedStop = params.data
+      }
     },
     clickRoute(params) {
-      console.log(params)
-      this.selectedStop = null
-      this.selectedRoute = params.data
+      if (params.node.selected) {
+        params.node.setSelected(false)
+        this.selectedRoute = null
+      } else {
+        params.node.setSelected(true)
+        this.selectedStop = null
+        this.selectedRoute = params.data
+      }
     },
     clickOnMarker(e) {
       const api = this.$refs.stopsGrid.api
@@ -135,7 +148,15 @@ export default {
     },
     goToInfo(e) {
       this.SET_SELECT_ROUTE(e)
-      this.$router.push({path: `/route/${e.data.ID}`})
+      this.$router.push({ path: `/route/${e.data.ID}` })
+    },
+    showAllStops() {
+      this.selectedStop = null
+      this.$refs.stopsGrid.api.deselectAll()
+    },
+    showAllRoutes() {
+      this.selectedRoute = null
+      this.$refs.routesGrid.api.deselectAll()
     }
   }
 }
