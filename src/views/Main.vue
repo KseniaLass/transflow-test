@@ -12,7 +12,7 @@
         class="main__grid ag-theme-quartz"
         :columnDefs="routesColumn"
         :rowData="getRoutes"
-        @rowClicked="routeClick"
+        @rowClicked="clickRoute"
         ref="routesGrid"
       ></ag-grid-vue>
       <ag-grid-vue
@@ -32,6 +32,7 @@
         :selected-route="selectedRoute"
         :selected-stop="selectedStop"
         @clickOnMarker="clickOnMarker($event)"
+        @clickOnPolyline="clickOnPolyline($event)"
       />
     </div>
   </div>
@@ -78,7 +79,9 @@ export default {
   computed: {
     ...mapGetters(['getRoutes', 'getStops']),
     routes() {
-      if (this.activeTab === 0 && !this.selectedStop) {
+      if (this.selectedRoute) {
+        return [this.selectedRoute]
+      } else if (this.activeTab === 0 && !this.selectedStop) {
         return this.getRoutes
       }
       return []
@@ -86,6 +89,8 @@ export default {
     stops() {
       if (this.selectedStop) {
         return [this.selectedStop]
+      } else if (this.selectedRoute) {
+        return this.selectedRoute.Stops
       }
       return this.getStops
     }
@@ -99,17 +104,25 @@ export default {
       this.selectedRoute = null
       this.selectedStop = params.data
     },
-    routeClick(params) {
+    clickRoute(params) {
       this.selectedStop = null
       this.selectedRoute = params.data
     },
     clickOnMarker(e) {
       const api = this.$refs.stopsGrid.api
-      const idx = this.getStops.findIndex((stop) => stop.ID === e.ID)
+      this.selectedStop = e
+      this.setSelectNode(api, this.getStops, e, 1)
+    },
+    clickOnPolyline(e) {
+      const api = this.$refs.routesGrid.api
+      this.selectedRoute = e
+      this.setSelectNode(api, this.getRoutes, e, 0)
+    },
+    setSelectNode(api, source, el, tab) {
+      const idx = source.findIndex((val) => val.ID === el.ID)
       const node = api.getRowNode(idx)
       node.setSelected(true)
-      this.activeTab = 1
-      this.selectedStop = e
+      this.activeTab = tab
       this.$nextTick(() => {
         api.ensureNodeVisible(node, 'middle')
       })
@@ -126,7 +139,6 @@ export default {
   &__grid {
     height: calc(100vh - 50px);
     width: 100%;
-    display: flex;
   }
 }
 </style>

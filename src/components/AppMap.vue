@@ -10,6 +10,7 @@
       v-for="route in routes"
       :key="route.ID"
       :lat-lngs="route.Points"
+      @click="clickOnPolyline(route)"
     />
     <l-marker
       v-for="stop in stops"
@@ -54,6 +55,11 @@ export default {
       if (val.length === 1) {
         this.fitToStop(val[0])
       }
+    },
+    routes: function (val) {
+      if (val.length === 1) {
+        this.fitToRoute(val[0])
+      }
     }
   },
   methods: {
@@ -78,8 +84,14 @@ export default {
     fitToStop(stop) {
       this.center = [stop.Lat, stop.Lon]
     },
+    fitToRoute(route) {
+      this.bounds = latLngBounds(route.Points)
+    },
     clickOnMarker(e) {
       this.$emit('clickOnMarker', e)
+    },
+    clickOnPolyline(e) {
+      this.$emit('clickOnPolyline', e)
     }
   }
 }
