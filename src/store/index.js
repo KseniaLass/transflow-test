@@ -15,7 +15,10 @@ export default new Vuex.Store({
     getRoutes: (state) => state.routes,
     getError: (state) => state.error,
     getLoading: (state) => state.loading,
-    getStops: (state) => state.stops
+    getStops: (state) => state.stops,
+    getRouteById: (state) => (id) => {
+      return state.routes.find((route) => route.ID === +id)
+    }
   },
   mutations: {
     // Форматируем полученные данный для работы приложения
@@ -28,6 +31,7 @@ export default new Vuex.Store({
           ID: route.ID,
           Name: route.Name,
           Points: route.Points.map(point => [point.Lat, point.Lon]),
+          Description: route.Description,
           Stops: []
         }
         route.Stops.forEach((stop) => {

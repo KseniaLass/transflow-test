@@ -13,6 +13,7 @@
         :columnDefs="routesColumn"
         :rowData="getRoutes"
         @rowClicked="clickRoute"
+        @rowDoubleClicked="goToInfo"
         ref="routesGrid"
       ></ag-grid-vue>
       <ag-grid-vue
@@ -41,7 +42,7 @@
 <script>
 import AppTabs from '@/components/AppTabs.vue'
 import AppMap from '@/components/AppMap.vue'
-import { mapGetters } from 'vuex'
+import { mapGetters, mapMutations } from 'vuex'
 import { AgGridVue } from 'ag-grid-vue'
 
 export default {
@@ -53,11 +54,12 @@ export default {
     selectedRoute: null,
     selectedStop: null,
     routesColumn: [
-      { headerName: 'Название', field: 'Name' },
+      { headerName: 'Название', field: 'Name', flex: 1 },
       {
         headerName: 'Кол-во остановок',
         field: 'Stops',
-        valueFormatter: (params) => params.value.length
+        valueFormatter: (params) => params.value.length,
+        flex: 1
       }
     ],
     stopsColumn: [
@@ -96,6 +98,7 @@ export default {
     }
   },
   methods: {
+    ...mapMutations(['SET_SELECT_ROUTE']),
     changeActiveTab(i) {
       this.activeTab = i
     },
@@ -127,6 +130,10 @@ export default {
       this.$nextTick(() => {
         api.ensureNodeVisible(node, 'middle')
       })
+    },
+    goToInfo(e) {
+      this.SET_SELECT_ROUTE(e)
+      this.$router.push({path: `/route/${e.data.ID}`})
     }
   }
 }
