@@ -110,15 +110,16 @@ export default {
     },
     clickOnMarker(e) {
       const api = this.$refs.stopsGrid.api
-      this.selectedStop = e
       this.setSelectNode(api, this.getStops, e, 1)
+      this.selectedStop = e
     },
     clickOnPolyline(e) {
       const api = this.$refs.routesGrid.api
-      this.selectedRoute = e
       this.setSelectNode(api, this.getRoutes, e, 0)
+      this.selectedRoute = e
     },
     setSelectNode(api, source, el, tab) {
+      console.log('el', el)
       const idx = source.findIndex((val) => val.ID === el.ID)
       const node = api.getRowNode(idx)
       node.setSelected(true)

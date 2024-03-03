@@ -7,28 +7,32 @@
   >
     <l-tile-layer :url="url">></l-tile-layer>
     <l-polyline
-      v-for="route in routes"
-      :key="route.ID"
       :lat-lngs="route.Points"
       @click="clickOnPolyline(route)"
-    />
+      v-for="route in routes"
+      :key="route.ID"
+    >
+      <l-tooltip :content="route.Name"></l-tooltip>
+    </l-polyline>
     <l-marker
       v-for="stop in stops"
-      :key="stop.ID"
+      :key="stop.ID + ' ' + stop.Forward"
       :lat-lng="[stop.Lat, stop.Lon]"
       :icon="markerIcon(stop)"
       @click="clickOnMarker(stop)"
-    />
+    >
+      <l-tooltip :content="stop.Name"></l-tooltip>
+    </l-marker>
   </l-map>
 </template>
 
 <script>
-import { LMap, LMarker, LPolyline, LTileLayer } from 'vue2-leaflet'
+import { LMap, LMarker, LPolyline, LTileLayer, LTooltip } from 'vue2-leaflet'
 import { icon, latLngBounds } from 'leaflet'
 
 export default {
   name: 'AppMap',
-  components: { LMap, LTileLayer, LPolyline, LMarker },
+  components: { LMap, LTileLayer, LPolyline, LMarker, LTooltip },
   props: {
     routes: {
       type: Array,

@@ -43,8 +43,10 @@ body {
   border: none !important;
 }
 .ag-row:hover,
-.ag-row-focus,
 .ag-row-selected {
   background: var.$base-color;
   color: var.$base-bg;
+}
+.leaflet-interactive:focus {
+  outline: none;
 }

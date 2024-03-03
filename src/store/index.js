@@ -32,7 +32,7 @@ export default new Vuex.Store({
         }
         route.Stops.forEach((stop) => {
           formatRoute.Stops.push(stop)
-          if (!stops[stop.ID]) {
+          if (!stops[stop.ID+''+stop.Forward]) {
             stops[stop.ID] = {
               ID: stop.ID,
               RouteID: stop.RouteID,
@@ -43,7 +43,7 @@ export default new Vuex.Store({
               routes: [route.ID]
             }
           } else {
-            stops[stop.ID].routes.push(route.ID)
+            stops[stop.ID+''+stop.Forward].routes.push(route.ID)
           }
         })
         routes.push(formatRoute)
