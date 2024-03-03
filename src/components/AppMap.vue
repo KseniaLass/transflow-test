@@ -56,13 +56,19 @@ export default {
   }),
   watch: {
     stops: function (val) {
+      if (!val.length) return
       if (val.length === 1) {
         this.fitToStop(val[0])
+      } else {
+        this.fitToAllStops()
       }
     },
     routes: function (val) {
+      if (!val.length) return
       if (val.length === 1) {
         this.fitToRoute(val[0])
+      } else {
+        this.fitToAllRouts()
       }
     }
   },
@@ -84,6 +90,13 @@ export default {
         allPoints.push(...route.Points)
       })
       this.bounds = latLngBounds(allPoints)
+    },
+    fitToAllStops() {
+      const allStops = []
+      this.stops.forEach((stop) => {
+        allStops.push([stop.Lat, stop.Lon])
+      })
+      this.bounds = latLngBounds(allStops)
     },
     fitToStop(stop) {
       this.center = [stop.Lat, stop.Lon]

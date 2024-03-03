@@ -101,6 +101,8 @@ export default {
     ...mapMutations(['SET_SELECT_ROUTE']),
     changeActiveTab(i) {
       this.activeTab = i
+      this.selectedRoute = null
+      this.selectedStop = null
     },
     clickStop(params) {
       params.node.setSelected(true)
@@ -108,6 +110,7 @@ export default {
       this.selectedStop = params.data
     },
     clickRoute(params) {
+      console.log(params)
       this.selectedStop = null
       this.selectedRoute = params.data
     },
@@ -122,7 +125,6 @@ export default {
       this.selectedRoute = e
     },
     setSelectNode(api, source, el, tab) {
-      console.log('el', el)
       const idx = source.findIndex((val) => val.ID === el.ID)
       const node = api.getRowNode(idx)
       node.setSelected(true)
