@@ -31,7 +31,7 @@ export default new Vuex.Store({
           Stops: []
         }
         route.Stops.forEach((stop) => {
-          formatRoute.Stops.push(stop.ID)
+          formatRoute.Stops.push(stop)
           if (!stops[stop.ID]) {
             stops[stop.ID] = {
               ID: stop.ID,

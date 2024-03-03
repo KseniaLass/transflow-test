@@ -6,20 +6,17 @@
     :bounds="bounds"
   >
     <l-tile-layer :url="url">></l-tile-layer>
-    <template
-      v-if="state === 'routes'"
-    >
-      <l-polyline
-        v-for="route in routes"
-        :key="route.ID"
-        :lat-lngs="route.Points"
-      />
-    </template>
+    <l-polyline
+      v-for="route in routes"
+      :key="route.ID"
+      :lat-lngs="route.Points"
+    />
     <l-marker
       v-for="stop in stops"
       :key="stop.ID"
       :lat-lng="[stop.Lat, stop.Lon]"
       :icon="markerIcon(stop)"
+      @click="clickOnMarker(stop)"
     />
   </l-map>
 </template>
@@ -34,22 +31,17 @@ export default {
   props: {
     routes: {
       type: Array,
-      required: true
+      required: false,
+      default: () => []
     },
     stops: {
       type: Array,
-      required: true
-    },
-    /**
-     * @enum routes | stops
-     */
-    state: {
-      type: String,
-      required: true
+      required: false,
+      default: () => []
     }
   },
   mounted() {
-    this.fitAllRouts()
+    this.fitToAllRouts()
   },
   data: () => ({
     url: 'https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
@@ -57,6 +49,13 @@ export default {
     center: [47.41322, -1.219482],
     bounds: null
   }),
+  watch: {
+    stops: function (val) {
+      if (val.length === 1) {
+        this.fitToStop(val[0])
+      }
+    }
+  },
   methods: {
     markerIcon(stop) {
       if (stop.Forward) {
@@ -69,12 +68,18 @@ export default {
         })
       }
     },
-    fitAllRouts() {
+    fitToAllRouts() {
       const allPoints = []
       this.routes.forEach((route) => {
         allPoints.push(...route.Points)
       })
       this.bounds = latLngBounds(allPoints)
+    },
+    fitToStop(stop) {
+      this.center = [stop.Lat, stop.Lon]
+    },
+    clickOnMarker(e) {
+      this.$emit('clickOnMarker', e)
     }
   }
 }
