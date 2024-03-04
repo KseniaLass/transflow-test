@@ -76,6 +76,7 @@ export default {
         headerName: 'Направление',
         field: 'Forward',
         valueFormatter: (params) => (params.value ? 'Прямое' : 'Обратное'),
+        cellDataType: 'text',
         flex: 1
       }
     ]
