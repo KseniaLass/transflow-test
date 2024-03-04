@@ -9,6 +9,10 @@
       </p>
       <p>
         <strong>Количество остановок: </strong><span>{{ route.Stops.length }}</span>
+        <ul>
+          <li>Прямых: {{getForwardStops.length}}</li>
+          <li>Обратных: {{getBackStops.length}}</li>
+        </ul>
       </p>
       <router-link to="/">Назад</router-link>
     </div>
@@ -16,7 +20,7 @@
       <h3>Остановки</h3>
       <p>
         <span
-          class="route__stop blue"
+          class="route__stop color-blue"
           v-for="stop in getForwardStops"
           :key="stop.ID"
           >{{ stop.Name }}</span
@@ -24,7 +28,7 @@
       </p>
       <p>
         <span
-          class="route__stop red"
+          class="route__stop color-red"
           v-for="stop in getBackStops"
           :key="stop.ID"
           >{{ stop.Name }}</span
@@ -62,15 +66,16 @@ export default {
   .col-right {
     padding: 15px;
   }
-  .red {
-    color: red;
-  }
-  .blue {
-    color: blue;
-  }
   &__stop {
     display: inline-block;
     margin: 0 3px;
+  }
+  ul {
+    margin: 5px 0 0;
+    padding: 0;
+    li {
+      text-decoration: none;
+    }
   }
 }
 </style>

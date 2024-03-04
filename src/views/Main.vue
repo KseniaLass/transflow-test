@@ -75,8 +75,11 @@ export default {
       {
         headerName: 'Направление',
         field: 'Forward',
-        valueFormatter: (params) => (params.value ? 'Прямое' : 'Обратное'),
-        cellDataType: 'text',
+        cellRenderer: (params) => {
+          return params.value
+            ? '<span class="color-blue">Прямое</span>'
+            : '<span class="color-red">Обратное</span>'
+        },
         flex: 1
       }
     ]
