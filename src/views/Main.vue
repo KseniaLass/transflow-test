@@ -44,7 +44,7 @@
 <script>
 import AppTabs from '@/components/AppTabs.vue'
 import AppMap from '@/components/AppMap.vue'
-import { mapGetters, mapMutations } from 'vuex'
+import { mapGetters } from 'vuex'
 import { AgGridVue } from 'ag-grid-vue'
 
 export default {
@@ -83,7 +83,6 @@ export default {
   computed: {
     ...mapGetters(['getRoutes', 'getStops']),
     routes() {
-      console.log('upd')
       if (this.selectedRoute) {
         return [this.selectedRoute]
       } else if (this.activeTab === 0 && !this.selectedStop) {
@@ -101,7 +100,6 @@ export default {
     }
   },
   methods: {
-    ...mapMutations(['SET_SELECT_ROUTE']),
     changeActiveTab(i) {
       this.activeTab = i
       this.selectedRoute = null
@@ -147,7 +145,6 @@ export default {
       })
     },
     goToInfo(e) {
-      this.SET_SELECT_ROUTE(e)
       this.$router.push({ path: `/route/${e.data.ID}` })
     },
     showAllStops() {

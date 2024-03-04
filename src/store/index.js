@@ -30,33 +30,33 @@ export default new Vuex.Store({
         const formatRoute = {
           ID: route.ID,
           Name: route.Name,
-          Points: route.Points.map(point => [point.Lat, point.Lon]),
+          Points: route.Points.map((point) => [point.Lat, point.Lon]),
           Description: route.Description,
           Stops: []
         }
         route.Stops.forEach((stop) => {
-          formatRoute.Stops.push(stop)
-          if (!stops[stop.ID+''+stop.Forward]) {
+          const formatStop = {
+            ID: stop.ID,
+            RouteID: stop.RouteID,
+            Name: stop.Name,
+            Lat: stop.Lat,
+            Lon: stop.Lon,
+            Forward: stop.Forward
+          }
+          formatRoute.Stops.push(formatStop)
+          if (!stops[stop.ID + '' + stop.Forward]) {
             stops[stop.ID] = {
-              ID: stop.ID,
-              RouteID: stop.RouteID,
-              Name: stop.Name,
-              Lat: stop.Lat,
-              Lon: stop.Lon,
-              Forward: stop.Forward,
+              ...formatStop,
               routes: [route.ID]
             }
           } else {
-            stops[stop.ID+''+stop.Forward].routes.push(route.ID)
+            stops[stop.ID + '' + stop.Forward].routes.push(route.ID)
           }
         })
         routes.push(formatRoute)
       })
       state.routes = routes
       state.stops = Object.values(stops)
-
-      console.log(state.routes[0])
-      console.log(state.stops[0])
     },
     SET_ERROR(state, data) {
       state.error = data

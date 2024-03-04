@@ -26,8 +26,18 @@
       </l-marker>
     </l-map>
     <div class="map__button">
-      <button v-if="stops.length === 1" @click="showAllStops">Показать все остановки</button>
-      <button v-if="routes.length === 1" @click="showAllRoutes">Показать все маршруты</button>
+      <button
+        v-if="stops.length === 1"
+        @click="showAllStops"
+      >
+        Показать все остановки
+      </button>
+      <button
+        v-if="routes.length === 1"
+        @click="showAllRoutes"
+      >
+        Показать все маршруты
+      </button>
     </div>
   </div>
 </template>

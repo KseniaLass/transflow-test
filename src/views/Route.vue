@@ -15,10 +15,20 @@
     <div class="col-right">
       <h3>Остановки</h3>
       <p>
-        <span class="route__stop blue" v-for="stop in getForwardStops" :key="stop.ID">{{ stop.Name }}</span>
+        <span
+          class="route__stop blue"
+          v-for="stop in getForwardStops"
+          :key="stop.ID"
+          >{{ stop.Name }}</span
+        >
       </p>
       <p>
-        <span class="route__stop red" v-for="stop in getBackStops" :key="stop.ID">{{ stop.Name }}</span>
+        <span
+          class="route__stop red"
+          v-for="stop in getBackStops"
+          :key="stop.ID"
+          >{{ stop.Name }}</span
+        >
       </p>
     </div>
   </div>
